@@ -1,22 +1,25 @@
 import backtrader as bt
+import pandas as pd
 import datetime
-from strategies import BuyAndHold
+from strategies.buyandhold import BuyAndHold
 
 symbol = "ETHAUD"
 interval = "5m"
+folder = "../data"
+STARTING_CASH = 100000
 
 cerebro = bt.Cerebro()
 
 # create a data feed
-data = bt.feeds.GenericCSVData(
-    dataname=f'data/{symbol}-{interval}.csv',
-    fromdate=datetime.datetime(2022, 1, 1),
-    dtformat=('%Y-%m-%d %H:%M:%S'),
-
-    datetime=0,
-    high=2,
-    low=3,
-    open=1,
-    close=4,
-    volume=5,
+filename = f"{folder}/{symbol}-{interval}.csv"
+df = pd.read_csv(filename, index_col=0, parse_dates=True)
+data = bt.feeds.PandasData(
+    dataname=df,
+    fromdate=datetime.datetime(2021,7,1)
 )
+
+
+cerebro.adddata(data)
+
+cerebro.run()
+cerebro.plot()

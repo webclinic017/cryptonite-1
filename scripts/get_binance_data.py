@@ -27,7 +27,6 @@ def save_data(symbol, interval, date):
 
     df = pd.DataFrame(klines, columns=columns)
     df['open_time'] = pd.to_datetime(df['open_time'], unit='ms')
-    df['close_time'] = pd.to_datetime(df['close_time'], unit='ms')
     df = df.drop(columns=['close_time','quote_asset_volume', 'number_of_trades','taker_buy_base_asset_volume', 'taker_buy_quote_asset_volume','ignore'])
     df = df.set_index('open_time')
 
